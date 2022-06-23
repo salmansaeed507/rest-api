@@ -15,7 +15,7 @@ import { UserModule } from './modules/user/user.module';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'root',
+      password: '',
       database: 'rest-api',
       entities: [User, Task],
       synchronize: false,
