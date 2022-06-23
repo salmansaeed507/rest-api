@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateTaskDto } from './create-task.dto';
 import { Task } from './task.entity';
 
@@ -18,9 +18,13 @@ export class TaskService {
     return this.taskRepository.save(task);
   }
 
-  public getTasks(user_id: number): Promise<Task[]> {
-    return this.taskRepository.findBy({
-      user_id: user_id,
-    });
+  public getTasks(user_id: number, name?: string): Promise<Task[]> {
+    const where = [
+      {
+        user_id: user_id,
+        name: Like(name ? '%' + name + '%' : '%%'),
+      },
+    ];
+    return this.taskRepository.findBy(where);
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateTaskDto } from './create-task.dto';
 import { Task } from './task.entity';
@@ -18,8 +18,11 @@ export class TaskController {
   }
 
   @Get('list-tasks')
-  async getTasks(@Req() req: any): Promise<{ tasks: Task[] }> {
-    const tasks: Task[] = await this.taskService.getTasks(req.user.id);
+  async getTasks(
+    @Req() req: any,
+    @Query('name') name: string,
+  ): Promise<{ tasks: Task[] }> {
+    const tasks: Task[] = await this.taskService.getTasks(req.user.id, name);
     return { tasks };
   }
 }
